@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hua.dao.SetMealDao">
+    <!--获取所有检查组-->
+    <select id="findAllCheckGroup" resultType="CheckGroup">
+        select * from t_checkgroup
+    </select>
+
+    <!--添加套餐-->
+    <insert id="add" parameterType="setmeal">
+        <selectKey resultType="int" order="AFTER" keyProperty="id" keyColumn="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+          INSERT INTO `t_setmeal` (`id`, `name`, `code`, `helpCode`, `sex`, `age`, `price`, `remark`, `attention`, `img`)
+            VALUES (NULL,
+                     #{name,jdbcType=VARCHAR},
+                     #{code,jdbcType=VARCHAR},
+                     #{helpCode,jdbcType=VARCHAR},
+                     #{sex,jdbcType=CHAR},
+                     #{age,jdbcType=VARCHAR},
+                     #{price,jdbcType=FLOAT},
+                     #{remark,jdbcType=VARCHAR},
+                     #{attention,jdbcType=VARCHAR},
+                     #{img,jdbcType=VARCHAR}
+                     );
+    </insert>
+
+    <!--添加套餐关联的检查组-->
+    <insert id="addCheckGroup">
+
+       INSERT INTO  `t_setmeal_checkgroup` (`setmeal_id`, `checkgroup_id`)
+          VALUES (#{setMealId}, #{checkgroupId});
+
+    </insert>
+
+    <!--分页获取套餐-->
+    <select id="findPage" parameterType="java.lang.String" resultType="setmeal">
+        select * from t_setmeal
+        <if test="value != null">
+              where code = #{value} or name = #{value} or helpCode = #{value}
+        </if>
+    </select>
+
+
+    <!--获取所有套餐-->
+    <select id="getSetmeal" resultType="setmeal">
+          select * from t_setmeal
+    </select>
+
+
+    <resultMap id="baseMap" type="setmeal">
+        <id property="id" column="id"></id>
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+        <result column="helpCode" property="helpCode"></result>
+        <result column="sex" property="sex"></result>
+        <result column="age" property="age"></result>
+        <result column="price" property="price"></result>
+        <result column="remark" property="remark"></result>
+        <result column="attention" property="attention"></result>
+        <result column="img" property="img"></result>
+    </resultMap>
+
+    <!--获取套餐详情(套餐+检查组+检查项)-->
+    <resultMap id="findByIdMap" type="setmeal" extends="baseMap">
+
+        <collection property="checkGroups" column="id" select="com.hua.dao.CheckGroupDao.findCheckGroupListBySetmealId" ofType="CheckGroup"></collection>
+    </resultMap>
+
+    <select id="findById" parameterType="int" resultMap="findByIdMap">
+        select * from t_setmeal where id = #{id}
+    </select>
+
+    <!--统计套餐数量-->
+    <select id="findSetMealCount" resultType="map">
+
+       select s.name,count(1) as value from t_order as r ,t_setmeal as s where s.id = r.setmeal_id group by r.setmeal_id
+    </select>
+
+    <!--获取热门套餐-->
+    <select id="getHotSetMeal" resultType="map">
+         select s.name,count(1) as setmeal_count,count(1)/(select count(1) from t_order) as proportion from t_order as r ,t_setmeal as s where s.id = r.setmeal_id group by r.setmeal_id order by setmeal_count limit 3
+    </select>
+</mapper>

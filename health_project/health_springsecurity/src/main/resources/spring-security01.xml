@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:security="http://www.springframework.org/schema/security"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+    <!--使用安全框架的 跨站请求伪造技术-->
+    <!--
+        1.  不能关闭跨站请求伪造<security:csrf disabled="true"></security:csrf>
+        2. 不能放行登录页面
+        3. 登录页面需要使用jsp
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        4. 拦截请求不能是/**
+            pattern="/pages/**"
+    -->
+
+    <!--
+        安全框架会记录上一次请求，认证成功后，继续请求
+    -->
+    <!--对资源放行-->
+    <security:http pattern="/favicon.ico" security="none"></security:http>
+  <!--  <security:http pattern="/login.html" security="none"></security:http>-->
+    <!--授权-->
+    <!-- auto-config: 使用security自带的页面-->
+    <!--use-expressions :是否使用security的表达式-->
+    <security:http  auto-config="true" use-expressions="false" >
+        <!--对某路径进行拦截，进行授权-->
+        <!--pattern ： 路径表达式   /** 拦截所有-->
+        <!-- access : 指定角色或者权限-->
+        <!--含义：用户必须有ROLE_ADMIN的角色才可以访问-->
+        <security:intercept-url pattern="/pages/**" access="ROLE_ADMIN"></security:intercept-url>
+
+        <!--配置自定义页面
+           login-page： 登录页面
+           default-target-url: 认证成功后默认访问的页面
+           login-processing-url: 登录的请求路径,  必须与登录表单的请求路径一致
+           authentication-failure-url: 认证失败的访问的页面
+           username-parameter: 用户名参数
+           password-parameter：  密码参数
+           -->
+        <security:form-login
+                    login-page="/login.jsp"
+                    default-target-url="/success.html"
+                    login-processing-url="/login.do"
+                    authentication-failure-url="/error.html"
+                    username-parameter="username"
+                    password-parameter="password"></security:form-login>
+
+        <!--关闭跨站请求伪造-->
+        <!-- security:csrf disabled="true"></security:csrf>-->
+    </security:http>
+
+    <!--认证-->
+    <!--认证管理器-->
+    <security:authentication-manager>
+        <!--认证信息提供者-->
+        <security:authentication-provider>
+            <!--用户服务-->
+            <security:user-service>
+                <!--提供用户
+                   name： 用户名
+                   password：密码({noop}: 不加密密码)
+                   authorties: 该用户的角色
+               -->
+                <security:user name="admin" authorities="ROLE_ADMIN" password="{noop}admin"></security:user>
+            </security:user-service>
+        </security:authentication-provider>
+
+    </security:authentication-manager>
+
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hua.dao.OrderSettingDao">
+
+    <!--判断是否存在冲突日期-->
+    <select id="findByOrderDate" parameterType="java.util.Date" resultType="OrderSetting">
+        select * from t_ordersetting where orderDate = #{orderDate}
+    </select>
+
+    <!--更新冲突日期可预约数量-->
+    <update id="editByOrderDate" parameterType="OrderSetting">
+        update t_ordersetting
+        <set>
+            <if test="orderDate != null">orderDate = #{orderDate,jdbcType=DATE},</if>
+            <if test="number != null">number = #{number,jdbcType=INTEGER},</if>
+            <if test="reservations != null">reservations = #{reservations,jdbcType=INTEGER},</if>
+        </set>
+        <where>
+            orderDate = #{orderDate}
+        </where>
+    </update>
+
+    <!--批量添加-->
+    <insert id="upload" parameterType="OrderSetting">
+        insert into t_ordersetting(id,orderDate,number,reservations)
+          values(
+              null,
+              #{orderDate,jdbcType=DATE},
+              #{number,jdbcType=INTEGER},
+              #{reservations,jdbcType=INTEGER}
+            )
+    </insert>
+
+
+    <!--获取当月预约信息-->
+    <select id="findByMonth" resultType="OrderSetting">
+          select * from t_ordersetting where orderDate between #{beginDate} and #{endDate}
+    </select>
+
+    <!--设置当天可预约人数-->
+    <update id="edit" parameterType="OrderSetting">
+        update t_ordersetting
+        <set>
+            <if test="number != null">number = #{number,jdbcType=INTEGER}</if>
+        </set>
+        <where>
+            orderDate = #{orderDate}
+        </where>
+    </update>
+</mapper>

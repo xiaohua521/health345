@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hua.dao.OrderDao">
+    <!--判断当前会员是否有预约该日的套餐-->
+    <select id="findByCondition" parameterType="order" resultType="long">
+        select count(1) from t_order where member_id = #{memberId} and orderDate = #{orderDate} and setmeal_id = #{setmealId}
+    </select>
+
+    <!--添加预约信息-->
+    <insert id="addOrder" parameterType="order">
+        <selectKey order="AFTER" keyProperty="id" keyColumn="id" resultType="int" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO `t_order`
+        (`id`, `member_id`, `orderDate`, `orderType`, `orderStatus`, `setmeal_id`)
+        VALUES (NULL,
+              #{memberId,jdbcType=INTEGER},
+              #{orderDate,jdbcType=DATE},
+              #{orderType,jdbcType=VARCHAR},
+              #{orderStatus,jdbcType=VARCHAR},
+              #{setmealId,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <!--获取预约成功信息-->
+    <select id="findById" parameterType="int" resultType="map">
+        select m.name as member,s.name as setmeal,o.orderDate,o.orderType  from t_order as o,t_member as m, t_setmeal as s where o.member_id = m.id  and s.id = o.setmeal_id and o.id = #{id}
+    </select>
+
+    <!--今日预约数-->
+    <select id="getTodayOrderCount" parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate = #{date}
+    </select>
+
+    <!--今日到诊数-->
+    <select id="getTodayVisitCount" parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate = #{date} and orderStatus = "已到诊"
+    </select>
+
+    <!--本周预约数-->
+    <select id="getThisWeekOrderCount"  parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate  &gt;= #{date}
+    </select>
+
+    <!--本周到诊数-->
+    <select id="getThisWeekVisitCount" parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate  &gt;= #{date} and orderStatus = "已到诊"
+    </select>
+
+    <!--本月预约数-->
+    <select id="getThisMonthOrderCount" parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate  &gt;= #{date}
+    </select>
+
+    <!--本月到诊数-->
+    <select id="getThisMonthVisitCount" parameterType="String" resultType="long">
+        select count(1) from t_order where orderDate  &gt;= #{date} and orderStatus = "已到诊"
+    </select>
+
+</mapper>

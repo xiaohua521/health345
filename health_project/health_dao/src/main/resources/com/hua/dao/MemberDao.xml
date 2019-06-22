@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hua.dao.MemberDao">
+    <!--判断当前用户是否是会员-->
+    <select id="findMemberByPhoneNum" parameterType="java.lang.String" resultType="member">
+          select * from t_member where phoneNumber = #{telephone}
+    </select>
+
+    <!--注册会员-->
+    <insert id="addMember" parameterType="member">
+
+        <selectKey resultType="int" keyColumn="id" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO `t_member`(`name`, `sex`, `idCard`, `phoneNumber`, `regTime`)
+        VALUES (
+              #{name,jdbcType=VARCHAR},
+              #{sex,jdbcType=CHAR},
+              #{idCard,jdbcType=VARCHAR},
+              #{phoneNumber,jdbcType=VARCHAR},
+              #{regTime}
+        )
+    </insert>
+    <!--获取每月会员数量-->
+    <select id="findMemberCount" parameterType="String" resultType="int">
+        select count(1) from t_member where regTime &lt;= #{month}
+    </select>
+
+    <!--新增会员数-->
+    <select id="getTodayAddMemberCount" parameterType="String" resultType="long">
+        select count(1) from t_member where regTime = #{date}
+    </select>
+
+    <!--会员总数-->
+    <select id="getMemberTotalCount" resultType="long">
+        select count(1) from t_member
+    </select>
+
+    <!--本周新增会员数-->
+    <select id="getThisWeekAddMemberCount" parameterType="String" resultType="long">
+         select count(1) from t_member where regTime &gt;= #{date}
+    </select>
+
+    <!--本月新增会员数-->
+    <select id="getThisMonthAddMemberCount" parameterType="String" resultType="long">
+        select count(1) from t_member where regTime &gt;= #{date}
+    </select>
+
+</mapper>
