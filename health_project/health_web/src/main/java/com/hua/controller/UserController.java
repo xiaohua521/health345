@@ -37,7 +37,7 @@ public class UserController {
         User user = (User)authentication.getPrincipal();
         //获取用户名
         String username = user.getUsername();
-        System.out.println("哈");
+        System.out.println("嘿嘿");
         return new Result(true, MessageConstant.GET_USERNAME_SUCCESS, username);
     }
 }
