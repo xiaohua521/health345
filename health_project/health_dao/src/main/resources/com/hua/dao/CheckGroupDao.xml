@@ -106,4 +106,15 @@
         select * from t_checkgroup where id in(select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{id})
     </select>
 
+
+    <select id="findBySetmealId" parameterType="int" resultType="checkgroup">
+        SELECT * FROM t_checkgroup c,
+              (SELECT checkgroup_id FROM t_setmeal_checkgroup WHERE setmeal_id = #{id}) s
+              WHERE c.id = s.checkgroup_id
+    </select>
+
+    <select id="findById2setmeal" resultType="int" parameterType="int">
+        SELECT setmeal_id FROM t_setmeal_checkgroup WHERE checkgroup_id = #{id}
+    </select>
+
 </mapper>

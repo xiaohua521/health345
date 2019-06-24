@@ -8,6 +8,7 @@ import com.hua.entity.PageResult;
 import com.hua.entity.QueryPageBean;
 import com.hua.pojo.CheckGroup;
 import com.hua.service.CheckGroupService;
+import com.hua.utils.JedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,9 @@ public class CheckGroupServiceImpl implements CheckGroupService {
 
     @Autowired
     CheckGroupDao checkGroupDao;
+
+    @Autowired
+    JedisPool jedisPool;
 
     /**
      * 获取检查组列表项数据
@@ -54,6 +58,10 @@ public class CheckGroupServiceImpl implements CheckGroupService {
 
         //添加检查组关联的检查项
         addAssoication(checkitemIds,checkGroup.getId());
+        //清空缓冲
+        clearRedis(checkGroup.getId());
+
+
     }
 
     /**
@@ -74,6 +82,8 @@ public class CheckGroupServiceImpl implements CheckGroupService {
 
             //删除检查组
             checkGroupDao.delById(id);
+            //清空缓冲
+            clearRedis(id);
         }
 
     }
@@ -112,6 +122,8 @@ public class CheckGroupServiceImpl implements CheckGroupService {
          checkGroupDao.delAssoicationCheckItem(checkGroup.getId());
          //添加新更新的检查组对应的检查项
          this.addAssoication(checkitemIds, checkGroup.getId());
+         //清空缓冲
+        clearRedis(checkGroup.getId());
     }
 
     /**
@@ -126,5 +138,24 @@ public class CheckGroupServiceImpl implements CheckGroupService {
                 checkGroupDao.addCheckItem(checkitemId,checkGroupId);
             }
         }
+    }
+
+
+    /**
+     *  清空redis缓冲
+     * @param id
+     */
+    public void clearRedis(Integer id) {
+        //利用checkGroup的id查询是否 与setmeal项关联
+        //如果有关联就清空缓冲
+        List<Integer> setmealIds = checkGroupDao.findById2setmeal(id);
+
+        if (setmealIds != null) {//不为空就清空缓冲
+            for (Integer setmealId : setmealIds) {
+                JedisUtils.clearRedis(jedisPool,setmealId);
+
+            }
+        }
+
     }
 }

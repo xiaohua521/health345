@@ -7,9 +7,11 @@ import com.hua.dao.CheckItemDao;
 import com.hua.entity.PageResult;
 import com.hua.pojo.CheckItem;
 import com.hua.service.CheckItemService;
+import com.hua.utils.JedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     @Autowired
     CheckItemDao checkItemDao;
+
+    @Autowired
+    JedisPool jedisPool;
 
     /**
      * 分页查询
@@ -48,6 +53,8 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void add(CheckItem checkItem) {
         checkItemDao.add(checkItem);
+        //清空缓冲
+        clearRedis(checkItem.getId());
     }
 
     /**
@@ -64,6 +71,8 @@ public class CheckItemServiceImpl implements CheckItemService {
         }else{
             //删除检查项
             checkItemDao.delById(id);
+            //清空缓冲
+            clearRedis(id);
         }
 
 
@@ -88,6 +97,8 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void update(CheckItem checkItem) {
         checkItemDao.update(checkItem);
+        //清空缓冲
+        clearRedis(checkItem.getId());
     }
 
     /**
@@ -98,5 +109,23 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
     public List<CheckItem> findAll() {
         return checkItemDao.findAll();
+    }
+
+    /**
+     *  清空缓冲
+     *
+     * @param id
+     */
+    public void clearRedis(Integer id) {
+        //利用checkItem的id查询是否 与setmeal项关联,并且获取其关联的setmeal的id
+        //如果有关联就清空缓冲
+        List<Integer> setmealIds = checkItemDao.findById2Setmeal(id);
+
+        if (setmealIds != null) {//不为空就清空缓冲
+            for (Integer setmealId : setmealIds) {
+
+                JedisUtils.clearRedis(jedisPool,setmealId);
+            }
+        }
     }
 }
