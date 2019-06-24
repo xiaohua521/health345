@@ -23,4 +23,10 @@ public interface OrderSettingService {
      * @param orderSetting
      */
     void edit(List<OrderSetting> orderSetting);
+
+    /**
+     * 定时清除预约数据
+     * @param date
+     */
+    void orderClear(String date);
 }
