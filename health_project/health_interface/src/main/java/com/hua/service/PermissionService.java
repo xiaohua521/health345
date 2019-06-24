@@ -1,24 +1,15 @@
-package com.hua.dao;
+package com.hua.service;
 
-import com.github.pagehelper.Page;
+import com.hua.entity.PageResult;
 import com.hua.pojo.Permission;
 
-import java.util.Set;
-
-public interface PermissionDao {
-
-    /**
-     * 根据角色id获取权限
-     * @param id
-     * @return
-     */
-    Set<Permission> findPermissionListFindByRoleId(Integer id);
+public interface PermissionService {
     /**
      * 分页查询权限列表
      * @param
      * @return
      */
-    Page<Permission> findPage(String queryString);
+    PageResult findPage(Integer currentPage, Integer pageSize, String queryString);
     /**
      * 根据ID查询权限
      * @param id

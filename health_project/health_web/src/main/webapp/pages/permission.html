@@ -33,7 +33,7 @@
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
                         <el-table-column prop="name" label="权限名称" align="center"></el-table-column>
-                        <el-table-column prop="code" label="KEYWORD" align="center"></el-table-column>
+                        <el-table-column prop="keyword" label="KEYWORD" align="center"></el-table-column>
                         <el-table-column prop="time" label="创建时间" align="center"></el-table-column>
                         <el-table-column prop="status" label="是否启用" align="center"></el-table-column>
                         <el-table-column prop="number" label="排序位" align="center"></el-table-column>
@@ -66,8 +66,8 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="KEYWORD" prop="code">
-                                            <el-input v-model="formData.code"/>
+                                        <el-form-item label="KEYWORD" prop="keyword">
+                                            <el-input v-model="formData.keyword"/>
                                         </el-form-item>
                                         <el-form-item label="创建时间">
                                             <el-input v-model="formData.time"/>
@@ -108,8 +108,8 @@
                                     </el-col>
                                     <el-col :span="12">
 
-                                        <el-form-item label="KEYWORD" prop="code">
-                                            <el-input v-model="formData.code"/>
+                                        <el-form-item label="KEYWORD" prop="keyword">
+                                            <el-input v-model="formData.keyword"/>
                                         </el-form-item>
                                         <el-form-item label="创建时间">
                                             <el-input v-model="formData.time"/>
@@ -162,8 +162,8 @@
                 dialogFormVisible4Edit:false,//编辑表单是否可见
                 rules: {//校验规则
                     name: [{ required: true, message: '权限名称为必填项', trigger: 'blur' }],
-                    code: [{ required: true, message: 'KEYWORD为必填项', trigger: 'blur' }],
-                    remark: [{ required: true, message: '备注为必填项', trigger: 'blur' }]
+                    keyword: [{ required: true, message: 'KEYWORD为必填项', trigger: 'blur' }],
+
                 }
             },
             //钩子函数，VUE对象初始化完成后自动执行
@@ -234,7 +234,7 @@
                 },
                 //分页查询
                 findPage() {
-                    if(this.pagination.queryString != null){
+                    if(this.pagination.queryString != null && this.pagination.queryString != ""){
                         this.pagination.currentPage = 1
                     }
                     //定义参数
@@ -253,10 +253,14 @@
                     })
 
                 },
-                // 重置表单
                 resetForm() {
+                    //清空检查表单项
                     this.formData = {};
-
+                    //清空检查项表单
+                    this.tableData = [] ;
+                    //重置标签页位置
+                    this.activeName='first';
+                    this.checkitemIds = [];
                 },
                 // 弹出添加窗口
                 handleCreate() {
