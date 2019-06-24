@@ -45,4 +45,10 @@ public interface OrderSettingDao {
      * @param orderSetting
      */
     void edit(OrderSetting orderSetting);
+
+    /**
+     * 定时清除预约设置
+     * @param date
+     */
+    void orderClear(String date);
 }
