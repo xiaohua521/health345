@@ -69,4 +69,10 @@ public class MessageConstant {
     public static final String GET_BUSINESS_REPORT_FAIL = "获取运营统计数据失败";
     public static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     public static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
+    public static final String ADD_MENU_SUCCESS = "添加菜单成功";
+    public static final String ADD_MENU_FAIL = "添加菜单失败";
+    public static final String DEL_MENU_SUCCESS = "删除菜单成功";
+    public static final String DEL_MENU_FAIL = "删除菜单失败";
+    public static final String UPDATE_MENU_SUCCESS = "更新菜单成功";
+    public static final String UPDATE_MENU_FAIL = "更新菜单失败";
 }
