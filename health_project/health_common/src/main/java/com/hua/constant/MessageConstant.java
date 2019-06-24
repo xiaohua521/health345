@@ -14,6 +14,8 @@ public class MessageConstant {
     public static final String EDIT_CHECKITEM_FAIL = "编辑检查项失败";
     public static final String EDIT_CHECKITEM_SUCCESS = "编辑检查项成功";
     public static final String QUERY_CHECKITEM_SUCCESS = "查询检查项成功";
+    public static final String QUERY_PERMISSION_SUCCESS = "查询权限成功";
+    public static final String QUERY_PERMISSION_FAIL = "查询权限失败";
     public static final String QUERY_CHECKITEM_FAIL = "查询检查项失败";
     public static final String UPLOAD_SUCCESS = "上传成功";
     public static final String ADD_CHECKGROUP_FAIL = "新增检查组失败";
