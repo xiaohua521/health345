@@ -4,6 +4,9 @@ import com.hua.entity.PageResult;
 import com.hua.entity.QueryPageBean;
 import com.hua.pojo.Menu;
 
+import java.util.List;
+import java.util.Map;
+
 public interface MenuService {
     /**
      * 获取菜单
@@ -37,4 +40,12 @@ public interface MenuService {
      * @param id
      */
     void delById(Integer id);
+
+    /**
+     * 动态展示菜单栏
+     * @param username
+     * @return
+     */
+
+    List<Map<String,Object>> getUserMenu(String username);
 }
