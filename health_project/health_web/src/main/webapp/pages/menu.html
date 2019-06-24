@@ -33,9 +33,9 @@
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
                         <el-table-column prop="name" label="菜单名称" align="center"></el-table-column>
-                        <el-table-column prop="url" label="链接" align="center"></el-table-column>
-                        <el-table-column prop="code" label="权限点代码" align="center"></el-table-column>
-                        <el-table-column prop="number" label="排序号" align="center"></el-table-column>
+                        <el-table-column prop="linkUrl" label="链接" align="center"></el-table-column>
+                        <!--<el-table-column prop="code" label="权限点代码" align="center"></el-table-column>-->
+                        <el-table-column prop="priority" label="排序号" align="center"></el-table-column>
                         <el-table-column label="操作" align="center">
                             <template slot-scope="scope">
                                 <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -64,23 +64,23 @@
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="链接" prop="url">
-                                            <el-input v-model="formData.url"/>
+                                        <el-form-item label="链接">
+                                            <el-input v-model="formData.linkUrl"/>
                                         </el-form-item>
                                     </el-col>
 
                                 </el-row>
-                                <el-row>
+                              <!--  <el-row>
                                     <el-col :span="12">
-                                        <el-form-item label="权限点代码" prop="code">
+                                        <el-form-item label="权限点代码">
                                             <el-input v-model="formData.code"/>
                                         </el-form-item>
                                     </el-col>
-                                </el-row>
+                                </el-row>-->
                                 <el-row>
                                     <el-col :span="24">
-                                        <el-form-item label="排序号" prop="number">
-                                            <el-input v-model="formData.number" type="textarea"></el-input>
+                                        <el-form-item label="排序号">
+                                            <el-input v-model="formData.priority"></el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -98,28 +98,28 @@
                             <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                 <el-row>
                                     <el-col :span="12">
-                                        <el-form-item label="菜单名称" prop="name">
+                                        <el-form-item label="菜单名称">
                                             <el-input v-model="formData.name"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="链接" prop="url">
-                                            <el-input v-model="formData.url"/>
+                                        <el-form-item label="链接">
+                                            <el-input v-model="formData.linkUrl"/>
                                         </el-form-item>
                                     </el-col>
 
                                 </el-row>
-                                <el-row>
+                                <!--<el-row>
                                     <el-col :span="12">
                                         <el-form-item label="权限点代码">
                                             <el-input v-model="formData.code"/>
                                         </el-form-item>
                                     </el-col>
-                                </el-row>
+                                </el-row>-->
                                 <el-row>
                                     <el-col :span="24">
                                         <el-form-item label="排序号">
-                                            <el-input v-model="formData.number" type="textarea"></el-input>
+                                            <el-input v-model="formData.priority"></el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -156,7 +156,7 @@
                 rules: {//校验规则
                     code: [{ required: true, message: '权限点代码为必填项', trigger: 'blur' }],
                     name: [{ required: true, message: '菜单名称为必填项', trigger: 'blur' }],
-                    url: [{ required: true, message: '链接为必填项', trigger: 'blur' }],
+                    linkUrl: [{ required: true, message: '链接为必填项', trigger: 'blur' }],
                     remark: [{ required: true, message: '排序号', trigger: 'blur' }]
                 }
             },
