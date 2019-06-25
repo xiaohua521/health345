@@ -2,7 +2,10 @@ package com.hua.dao;
 
 import com.github.pagehelper.Page;
 import com.hua.pojo.Permission;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Set;
 
 public interface PermissionDao {
@@ -43,4 +46,26 @@ public interface PermissionDao {
      * @return
      */
     void update(Permission permission);
+
+
+    /**
+     *  查询权限列表信息展示
+     * @return
+     */
+    Set<Permission> findAll();
+
+    /**
+     *  添加角色和权限的关联
+     * @param roleId
+     * @param permissionId
+     */
+    void addRole2Permission(@Param("roleId") Integer roleId, @Param("permissionId")Integer permissionId);
+
+    /**
+     *  删除角色和权限的关联
+     * @param id
+     */
+    void remove(Integer id);
+
+    List<Integer> findPermissionId(Integer id);
 }

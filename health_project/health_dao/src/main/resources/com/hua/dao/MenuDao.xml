@@ -56,4 +56,26 @@
         SELECT * FROM t_menu WHERE parentMenuId = #{id}
     </select>
 
+    <select id="findAll" resultType="menu">
+        select *  from t_menu
+    </select>
+
+    <insert id="addRole2Menu" >
+          INSERT INTO t_role_menu(role_id,menu_id) VALUES(#{roleId}, #{menuId})
+    </insert>
+
+    <delete id="remove" parameterType="int">
+          DELETE FROM t_role_menu WHERE role_id = #{id}
+    </delete>
+
+
+    <!--根据角色id获取权限-->
+    <select id="findMenuListFindByRoleId" parameterType="int" resultType="menu">
+        select * from t_menu where id in(select menu_id from t_role_menu where role_id = #{id})
+    </select>
+
+    <select id="findMenuId" parameterType="int" resultType="int">
+        select id from t_menu where id in(select menu_id from t_role_menu where role_id = #{id})
+    </select>
+
 </mapper>

@@ -87,5 +87,24 @@ public class MessageConstant {
     public static final String GET_SETMEAL_COUNT_SEX_FAIL = "获取性别占比失败";
     public static final String GET_SETMEAL_COUNT_AGE_SUCCESS = "获取年龄段比例成功";
     public static final String GET_SETMEAL_COUNT_AGE_FAIL = "获取年龄段比例失败";
+    public static final String QUERY_ROLE_SUCCESS = "查询角色成功";
+    public static final String QUERY_ROLE_FAIL = "查询角色失败";
+    public static final String QUERY_USER_SUCCESS = "查询用户成功";
+    public static final String QUERY_USER_FAIL = "查询用户失败";
+    public static final String ADD_USER_SUCCESS  = "添加用户成功";
+    public static final String ADD_USER_FAIL  = "添加用户失败";
+    public static final String EDIT_USER_SUCCESS  = "编辑用户成功";
+    public static final String EDIT_USER_FAIL  = "编辑用户失败";
+    public static final String DELETE_USER_SUCCESS  = "删除用户成功";
+    public static final String DELETE_USER_FAIL   = "删除用户失败";
+    public static final String QUERY_ROLE_LIST_SUCCESS = "查询角色列表数据成功";
+    public static final String QUERY_ROLE_LIST_FAIL = "查询角色列表数据失败";
+    public static final String ADD_ROLE_LIST_SUCCESS = "添加角色列表数据成功";
+    public static final String ADD_ROLE_LIST_FAIL = "添加角色列表数据失败";
+    public static final String DELETE_ROLE_LIST_SUCCESS = "删除角色数据成功";
+    public static final String DELETE_ROLE_LIST_FAIL = "删除角色数据失败";
+    public static final String EDIT_ROLE_LIST_SUCCESS = "编辑角色数据成功";
+    public static final String EDIT_ROLE_LIST_FAIL = "编辑角色数据失败";
+
 
 }

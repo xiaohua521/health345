@@ -8,6 +8,10 @@
         select * from t_permission where id in(select permission_id from t_role_permission where role_id = #{id})
     </select>
 
+    <select id="findPermissionId" parameterType="int" resultType="int">
+        select id from t_permission where id in(select permission_id from t_role_permission where role_id = #{id})
+    </select>
+
 
     <!--分页查询权限信息列表-->
     <select id="findPage" resultType="Permission" parameterType="String">
@@ -28,7 +32,7 @@
         <selectKey keyProperty="id" keyColumn="id" resultType="int" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
-       INSERT INTO `t_permission` (`id`, `name`, `keyword`, `description`)
+        INSERT INTO `t_permission` (`id`, `name`, `keyword`, `description`)
         VALUES (#{id}, #{name}, #{keyword}, #{description});
     </insert>
 
@@ -48,4 +52,16 @@
             id = #{id}
         </where>
     </update>
+
+    <select id="findAll" resultType="permission">
+        select *  from t_permission
+    </select>
+
+    <select id="addRole2Permission">
+          INSERT INTO t_role_permission(role_id,permission_id) VALUES(#{roleId},#{permissionId})
+    </select>
+
+    <delete id="remove" parameterType="int">
+        DELETE FROM t_role_permission WHERE role_id = #{id}
+    </delete>
 </mapper>

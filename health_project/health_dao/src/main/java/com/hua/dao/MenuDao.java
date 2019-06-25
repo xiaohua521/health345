@@ -2,7 +2,10 @@ package com.hua.dao;
 
 import com.github.pagehelper.Page;
 import com.hua.pojo.Menu;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public interface MenuDao {
@@ -49,4 +52,28 @@ public interface MenuDao {
     Menu getMenu(Integer menuId);
 
     List<Menu> getMenuById(Integer id);
+
+    /**
+     *  查询菜单信息展示
+     * @return
+     */
+    LinkedHashSet<Menu> findAll();
+
+    /**
+     *  添加角色和菜单的关联
+     * @param roleId
+     * @param menuId
+     */
+    void addRole2Menu(@Param("roleId") Integer roleId, @Param("menuId")Integer menuId);
+
+    /**
+     *  删除角色和菜单的关联
+     * @param id
+     */
+    void remove(Integer id);
+
+    LinkedHashSet<Menu> findMenuListFindByRoleId(Integer id);
+
+    List<Integer> findMenuId(Integer id);
+
 }
