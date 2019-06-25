@@ -58,4 +58,9 @@ public class MemberServiceImpl implements MemberService {
         }
         return memberCount;
     }
+
+    @Override
+    public int findStartDateMember(String format1) {
+        return memberDao.findMemberCount(format1);
+    }
 }
