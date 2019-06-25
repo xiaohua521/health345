@@ -18,4 +18,9 @@
 
         select * from t_role where id in(select role_id from t_user_role where user_id = #{id})
     </select>
+
+    <!--查询所有-->
+    <select id="findAll" resultType="role">
+        select * from t_role
+    </select>
 </mapper>

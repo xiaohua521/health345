@@ -21,4 +21,74 @@
     <select id="findByUserName" parameterType="java.lang.String" resultMap="findByUserNameMap">
           select * from t_user where username = #{username}
     </select>
+
+    <!--分页-->
+    <select id="findByPage" resultType="sysUser" parameterType="string">
+        select * from t_user
+        <if test="value != null and value.length > 0">
+            where username = #{value}
+        </if>
+    </select>
+
+    <!--根据用户id查询用户数据-->
+    <select id="findById" parameterType="int" resultType="sysUser">
+        select * from t_user where id = #{id}
+    </select>
+
+    <!--根据用户id查询角色ids-->
+    <select id="findRoleIdsById" resultType="int">
+        select role_id from t_user_role where user_id = #{id}
+    </select>
+
+    <!--修改用户信息-->
+    <update id="update" parameterType="sysUser">
+        update t_user
+        <set>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password !=null">
+                password = #{password},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="station != null">
+                station = #{station},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--删除用户和角色的关系-->
+    <delete id="delAssociation" parameterType="int">
+        delete from t_user_role where user_id = #{id}
+    </delete>
+
+    <!--添加用户和角色的关系(中间表添加数据)-->
+    <insert id="insert">
+        insert into t_user_role values(#{param1},#{param2})
+    </insert>
+
+    <!--添加用户-->
+    <insert id="add" parameterType="sysUser">
+        <selectKey resultType="int" order="AFTER" keyProperty="id" keyColumn="id">
+            select last_insert_id()
+        </selectKey>
+        INSERT INTO t_user (`birthday`, `gender`, `username`, `password`, `remark`, `station`, `telephone`) VALUES
+        (#{birthday}, #{gender}, #{username}, #{password}, #{remark}, #{station}, #{telephone})
+    </insert>
+
+    <delete id="delById" parameterType="int">
+        delete from t_user where id = #{id}
+    </delete>
 </mapper>
