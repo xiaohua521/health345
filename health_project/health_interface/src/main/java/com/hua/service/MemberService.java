@@ -20,4 +20,7 @@ public interface MemberService {
     void reg(Member member);
 
     List<Integer> getReportMemberCount(List<String> months);
+
+    int findStartDateMember(String format1);
+
 }
