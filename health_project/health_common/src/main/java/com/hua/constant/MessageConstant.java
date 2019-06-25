@@ -1,5 +1,7 @@
 package com.hua.constant;
 
+import java.util.SplittableRandom;
+
 /**
  * @author ：hua
  * @date ：Created in 2019/6/9
@@ -81,4 +83,9 @@ public class MessageConstant {
     public static final String DEL_MENU_FAIL = "删除菜单失败";
     public static final String UPDATE_MENU_SUCCESS = "更新菜单成功";
     public static final String UPDATE_MENU_FAIL = "更新菜单失败";
+    public static final String GET_SETMEAL_COUNT_SEX_SUCCESS = "获取性别占比成功";
+    public static final String GET_SETMEAL_COUNT_SEX_FAIL = "获取性别占比失败";
+    public static final String GET_SETMEAL_COUNT_AGE_SUCCESS = "获取年龄段比例成功";
+    public static final String GET_SETMEAL_COUNT_AGE_FAIL = "获取年龄段比例失败";
+
 }
