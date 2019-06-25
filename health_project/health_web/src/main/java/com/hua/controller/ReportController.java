@@ -3,7 +3,6 @@ package com.hua.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.hua.constant.MessageConstant;
 import com.hua.entity.Result;
-import com.hua.pojo.Setmeal;
 import com.hua.service.MemberService;
 import com.hua.service.ReportService;
 import com.hua.service.SetMealService;
@@ -40,9 +39,9 @@ public class ReportController {
     ReportService reportService;
 
     @RequestMapping("/getMemberReport")
-    public Result getMemberReport(){
+    public Result getMemberReport() {
         //创建Map集合
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         //创建日期列表
         List<String> months = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -56,20 +55,21 @@ public class ReportController {
             calendar.add(Calendar.MONTH, 1);
         }
         //把需要展示数据的月份的会员数量添加map中
-        map.put("months",months);
+        map.put("months", months);
         //统计每月会员的增长数量
         List<Integer> memberCount = memberService.getReportMemberCount(months);
         //把需要展示数据的月份的会员数量添加map中
-        map.put("memberCount",memberCount);
+        map.put("memberCount", memberCount);
         return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_FAIL, map);
     }
 
     /**
      * 套餐预约占比统计
+     *
      * @return
      */
     @RequestMapping("/getSetmealReport")
-    public Result getSetmealReport(){
+    public Result getSetmealReport() {
         try {
             Map<String, Object> map = new HashMap<>();
 
@@ -77,7 +77,7 @@ public class ReportController {
             List<String> setMealName = new ArrayList<>();
 
             //获取套餐以及对应的数量
-            List<Map<String,String>> setmealCount = setMealService.findSetMealCount();
+            List<Map<String, String>> setmealCount = setMealService.findSetMealCount();
             for (Map<String, String> setMeal : setmealCount) {
                 String name = setMeal.get("name");
                 setMealName.add(name);
@@ -95,12 +95,13 @@ public class ReportController {
 
     /**
      * 运营数据统计
+     *
      * @return
      */
     @RequestMapping("/getBusinessReportData")
-    public Result getBusinessReportData(){
+    public Result getBusinessReportData() {
         try {
-            Map<String,Object> map = reportService.getBusinessReportData();
+            Map<String, Object> map = reportService.getBusinessReportData();
             return new Result(true, MessageConstant.GET_BUSINESS_REPORT_SUCCESS, map);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,15 +112,16 @@ public class ReportController {
 
     /**
      * 到处excel
+     *
      * @return
      */
     @RequestMapping("/exportBusinessReport")
-    public Result exportBusinessReport(HttpServletRequest request, HttpServletResponse response){
+    public Result exportBusinessReport(HttpServletRequest request, HttpServletResponse response) {
         try {
             //获取运营统计数据
             Map<String, Object> businessReportData = reportService.getBusinessReportData();
             //获取模板绝对路径
-            String reportExcel = request.getSession().getServletContext().getRealPath("/template")+File.separator+"report_template.xlsx";
+            String reportExcel = request.getSession().getServletContext().getRealPath("/template") + File.separator + "report_template.xlsx";
             //获取xlsx流
             FileInputStream inputStream = new FileInputStream(new File(reportExcel));
             //创建工作簿
@@ -134,7 +136,7 @@ public class ReportController {
             row.getCell(5).setCellValue(String.valueOf(reportDate));
 
             //获取行
-             row = sheet.getRow(4);
+            row = sheet.getRow(4);
             //获取新增会员数
             Object todayNewMember = businessReportData.get("todayNewMember");
             row.getCell(5).setCellValue(String.valueOf(todayNewMember));
@@ -178,9 +180,9 @@ public class ReportController {
 
 
             //热门套餐
-            List<Map<String,Object>> hotSetmeal = ( List<Map<String,Object>>)businessReportData.get("hotSetmeal");
+            List<Map<String, Object>> hotSetmeal = (List<Map<String, Object>>) businessReportData.get("hotSetmeal");
             //行数
-            int rowNum = 12 ;
+            int rowNum = 12;
             for (Map<String, Object> map : hotSetmeal) {
                 //获取行
                 row = sheet.getRow(rowNum);
@@ -214,4 +216,75 @@ public class ReportController {
         }
         return null;
     }
+
+    /**
+     * 用户性别比例
+     *
+     * @return
+     */
+    @RequestMapping("/getSexproportion")
+    public Result getSexproportion() {
+        System.out.println("请求男女占比接收到了");
+        try {
+            Map<String, Object> map = new HashMap<>();
+
+//            //定义一个集合用于存储 性别
+            List<String> sexlist = new ArrayList<>();
+
+
+            //调用方法 获取性别
+            List<Map<String, String>> sexNamelist = reportService.getSexproportion();
+
+            for (Map<String, String> stringMap : sexNamelist) {
+                String sexs = stringMap.get("name");
+
+                if ("1".equals(sexs)) {
+                    sexs = "男";
+
+                } else if ("0".equals(sexs)) {
+                    sexs = "女";
+                } else {
+                    sexs = "未知";
+                }
+                stringMap.put("name", sexs);
+                sexlist.add(sexs);
+
+            }
+            map.put("sexNames", sexlist);
+            map.put("sexCount", sexNamelist);
+            return new Result(true, MessageConstant.GET_SETMEAL_COUNT_SEX_SUCCESS, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.GET_SETMEAL_COUNT_SEX_FAIL);
+        }
+    }
+
+    /**
+     * 年龄段 比例   //0-18、18-30、30-45、45以上
+     *
+     * @return
+     */
+    @RequestMapping("/getAgebracket")
+    public Result getAgebracket() {
+        try {
+            //定义返回ma集合
+            Map<String, Object> map = new HashMap<>();
+            //存储names
+            List<String> ageNames = new ArrayList<>();
+
+            List<Map<String, String>> mapList = reportService.getAgebracket();
+            for (Map<String, String> stringMap : mapList) {
+                ageNames.add(stringMap.get("name"));
+            }
+
+            map.put("ageNames", ageNames);
+            map.put("ageCount", mapList);
+            return new Result(true, MessageConstant.GET_SETMEAL_COUNT_AGE_FAIL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, MessageConstant.GET_SETMEAL_COUNT_AGE_FAIL);
+        }
+
+    }
+
 }
