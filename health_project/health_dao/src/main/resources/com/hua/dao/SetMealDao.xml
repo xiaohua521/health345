@@ -67,7 +67,9 @@
     <!--获取套餐详情(套餐+检查组+检查项)-->
     <resultMap id="findByIdMap" type="setmeal" extends="baseMap">
 
-        <collection property="checkGroups" column="id" select="com.hua.dao.CheckGroupDao.findCheckGroupListBySetmealId" ofType="CheckGroup"></collection>
+        <collection property="checkGroups" column="id"
+                    select="com.hua.dao.CheckGroupDao.findCheckGroupListBySetmealId"
+                    ofType="CheckGroup"></collection>
     </resultMap>
 
     <select id="findById" parameterType="int" resultMap="findByIdMap">
@@ -83,5 +85,9 @@
     <!--获取热门套餐-->
     <select id="getHotSetMeal" resultType="map">
          select s.name,count(1) as setmeal_count,count(1)/(select count(1) from t_order) as proportion from t_order as r ,t_setmeal as s where s.id = r.setmeal_id group by r.setmeal_id order by setmeal_count limit 3
+    </select>
+
+    <select id="findByIdSetmeal" parameterType="int" resultType="setmeal">
+        SELECT * FROM t_setmeal WHERE id = #{id}
     </select>
 </mapper>

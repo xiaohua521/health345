@@ -51,4 +51,18 @@ public interface CheckItemDao {
      * @return
      */
     List<CheckItem> findAll();
+
+    /**
+     *  通过checkGroup的id进行查询
+     * @param id
+     * @return
+     */
+    List<CheckItem> findByCheckGroupId(Integer id);
+
+    /**
+     *  通过checkItem的id查询setmeal的id
+     * @param id
+     * @return
+     */
+    List<Integer> findById2Setmeal(Integer id);
 }

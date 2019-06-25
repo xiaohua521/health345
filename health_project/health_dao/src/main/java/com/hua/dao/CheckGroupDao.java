@@ -65,4 +65,19 @@ public interface CheckGroupDao {
      * @param checkGroup
      */
     void update(CheckGroup checkGroup);
+
+    /**
+     *  通过setmeal的id查询
+     * @param id
+     * @return
+     */
+    List<CheckGroup> findBySetmealId(Integer id);
+
+    /**
+     *  通过checkGroup的id查询setmeal的id
+     *
+     * @param id
+     * @return
+     */
+    List<Integer> findById2setmeal(Integer id);
 }

@@ -61,4 +61,15 @@
     <select id="findCheckItemListByCheckGroupId" parameterType="int" resultType="CheckItem">
         select * from t_checkitem where id in(select checkitem_id from t_checkgroup_checkitem where checkgroup_id = #{id})
     </select>
+
+
+    <select id="findByCheckGroupId" parameterType="int" resultType="checkitem">
+        SELECT * FROM t_checkitem WHERE id IN
+            ( SELECT checkitem_id FROM t_checkgroup_checkitem WHERE checkgroup_id = #{id})
+    </select>
+
+    <select id="findById2Setmeal" parameterType="int" resultType="int">
+        SELECT setmeal_id FROM t_setmeal_checkgroup WHERE checkgroup_id =
+        (SELECT checkgroup_id FROM t_checkgroup_checkitem WHERE checkitem_id = #{id})
+    </select>
 </mapper>
