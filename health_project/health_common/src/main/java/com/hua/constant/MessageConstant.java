@@ -1,5 +1,7 @@
 package com.hua.constant;
 
+import java.util.SplittableRandom;
+
 /**
  * @author ：hua
  * @date ：Created in 2019/6/9
@@ -14,12 +16,18 @@ public class MessageConstant {
     public static final String EDIT_CHECKITEM_FAIL = "编辑检查项失败";
     public static final String EDIT_CHECKITEM_SUCCESS = "编辑检查项成功";
     public static final String QUERY_CHECKITEM_SUCCESS = "查询检查项成功";
+    public static final String QUERY_PERMISSION_SUCCESS = "查询权限成功";
+    public static final String QUERY_PERMISSION_FAIL = "查询权限失败";
     public static final String QUERY_CHECKITEM_FAIL = "查询检查项失败";
     public static final String UPLOAD_SUCCESS = "上传成功";
     public static final String ADD_CHECKGROUP_FAIL = "新增检查组失败";
     public static final String ADD_CHECKGROUP_SUCCESS = "新增检查组成功";
+    public static final String ADD_PERMISSION_SUCCESS = "新增权限成功";
+    public static final String ADD_PERMISSION_FAIL = "新增权限失败";
     public static final String DELETE_CHECKGROUP_FAIL = "删除检查组失败";
     public static final String DELETE_CHECKGROUP_SUCCESS = "删除检查组成功";
+    public static final String DELETE_PERMISSION_SUCCESS = "删除权限成功";
+    public static final String DELETE_PERMISSION_FAIL = "删除权限失败";
     public static final String QUERY_CHECKGROUP_SUCCESS = "查询检查组成功";
     public static final String QUERY_CHECKGROUP_FAIL = "查询检查组失败";
     public static final String EDIT_CHECKGROUP_FAIL = "编辑检查组失败";
@@ -40,6 +48,8 @@ public class MessageConstant {
     public static final String DELETE_MEMBER_SUCCESS = "删除会员成功";
     public static final String EDIT_MEMBER_FAIL = "编辑会员失败";
     public static final String EDIT_MEMBER_SUCCESS = "编辑会员成功";
+    public static final String EDIT_PERMISSION_SUCCESS = "编辑权限成功";
+    public static final String EDIT_PERMISSION_FAIL = "编辑权限失败";
     public static final String TELEPHONE_VALIDATECODE_NOTNULL = "手机号和验证码都不能为空";
     public static final String LOGIN_SUCCESS = "登录成功";
     public static final String VALIDATECODE_ERROR = "验证码输入错误";
@@ -67,4 +77,15 @@ public class MessageConstant {
     public static final String GET_BUSINESS_REPORT_FAIL = "获取运营统计数据失败";
     public static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     public static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
+    public static final String ADD_MENU_SUCCESS = "添加菜单成功";
+    public static final String ADD_MENU_FAIL = "添加菜单失败";
+    public static final String DEL_MENU_SUCCESS = "删除菜单成功";
+    public static final String DEL_MENU_FAIL = "删除菜单失败";
+    public static final String UPDATE_MENU_SUCCESS = "更新菜单成功";
+    public static final String UPDATE_MENU_FAIL = "更新菜单失败";
+    public static final String GET_SETMEAL_COUNT_SEX_SUCCESS = "获取性别占比成功";
+    public static final String GET_SETMEAL_COUNT_SEX_FAIL = "获取性别占比失败";
+    public static final String GET_SETMEAL_COUNT_AGE_SUCCESS = "获取年龄段比例成功";
+    public static final String GET_SETMEAL_COUNT_AGE_FAIL = "获取年龄段比例失败";
+
 }

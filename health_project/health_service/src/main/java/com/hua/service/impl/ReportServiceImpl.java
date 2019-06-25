@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.hua.dao.MemberDao;
 import com.hua.dao.OrderDao;
 import com.hua.dao.SetMealDao;
+import com.hua.entity.Result;
 import com.hua.service.ReportService;
 import com.hua.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,17 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     SetMealDao setMealDao;
+
     /**
      * 运营数据统计
+     *
      * @return
      */
     @Override
-    @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Map<String, Object> getBusinessReportData() throws Exception {
         //封装统计数据集合
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         //获取统计日期---当前日期
         String reportDate = DateUtils.parseDate2String(new Date());
@@ -53,13 +56,13 @@ public class ReportServiceImpl implements ReportService {
 
         //本周新增会员数
         //获取本周周一日期
-        String thisfirstDayOfWeek =  DateUtils.parseDate2String(DateUtils.getThisWeekMonday());
+        String thisfirstDayOfWeek = DateUtils.parseDate2String(DateUtils.getThisWeekMonday());
         long thisWeekAddMemberCount = memberDao.getThisWeekAddMemberCount(thisfirstDayOfWeek);
 
         //本月新增会员数
         //获取本月1号的日期
-        String firstDay4ThisMonth =DateUtils.parseDate2String(DateUtils.getFirstDay4ThisMonth());
-        long thisMonthAddMemberCount  = memberDao.getThisMonthAddMemberCount(firstDay4ThisMonth);
+        String firstDay4ThisMonth = DateUtils.parseDate2String(DateUtils.getFirstDay4ThisMonth());
+        long thisMonthAddMemberCount = memberDao.getThisMonthAddMemberCount(firstDay4ThisMonth);
 
         //预约到诊数据统计
         //今日预约数
@@ -76,21 +79,39 @@ public class ReportServiceImpl implements ReportService {
         long thisMonthVisitCount = orderDao.getThisMonthVisitCount(firstDay4ThisMonth);
 
         //热门套餐--查询预约最多的套餐 （前三名）
-        List<Map<String,Object>> HotSetMealList = setMealDao.getHotSetMeal();
+        List<Map<String, Object>> HotSetMealList = setMealDao.getHotSetMeal();
 
-        map.put("reportDate",reportDate);
-        map.put("todayNewMember",todayAddMemberCount);
-        map.put("totalMember",memberTotalCount);
-        map.put("thisWeekNewMember",thisWeekAddMemberCount);
-        map.put("thisMonthNewMember",thisMonthAddMemberCount);
-        map.put("todayOrderNumber",todayOrderCount);
-        map.put("todayVisitsNumber",todayVisitCount);
-        map.put("thisWeekOrderNumber",thisWeekOrderCount);
-        map.put("thisWeekVisitsNumber",thisWeekVisitCount);
-        map.put("thisMonthOrderNumber",thisMonthOrderCount);
-        map.put("thisMonthVisitsNumber",thisMonthVisitCount);
-        map.put("hotSetmeal",HotSetMealList);
+        map.put("reportDate", reportDate);
+        map.put("todayNewMember", todayAddMemberCount);
+        map.put("totalMember", memberTotalCount);
+        map.put("thisWeekNewMember", thisWeekAddMemberCount);
+        map.put("thisMonthNewMember", thisMonthAddMemberCount);
+        map.put("todayOrderNumber", todayOrderCount);
+        map.put("todayVisitsNumber", todayVisitCount);
+        map.put("thisWeekOrderNumber", thisWeekOrderCount);
+        map.put("thisWeekVisitsNumber", thisWeekVisitCount);
+        map.put("thisMonthOrderNumber", thisMonthOrderCount);
+        map.put("thisMonthVisitsNumber", thisMonthVisitCount);
+        map.put("hotSetmeal", HotSetMealList);
 
         return map;
     }
+
+    //查询男女比例
+    @Override
+    public List<Map<String, String>> getSexproportion() {
+        return memberDao.getSexproportion();
+
+    }
+
+    /**
+     * 查询年龄段
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, String>> getAgebracket() {
+        return memberDao.getAgebracket();
+    }
+
 }

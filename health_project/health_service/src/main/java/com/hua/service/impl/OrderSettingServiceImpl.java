@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.EditorKit;
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -73,6 +74,15 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         for (OrderSetting setting : orderSetting) {
             editByOrderDate(setting);
         }
+    }
+
+    /**
+     * 定时清除
+     * @param date
+     */
+    @Override
+    public void orderClear(String date) {
+        orderSettingDao.orderClear(date);
     }
 
 

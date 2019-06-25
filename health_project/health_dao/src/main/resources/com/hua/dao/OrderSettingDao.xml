@@ -49,4 +49,9 @@
             orderDate = #{orderDate}
         </where>
     </update>
+
+    <!--定时清除预约设置-->
+    <delete id="orderClear" parameterType="String">
+        delete from t_ordersetting where orderDate &lt; #{date}
+    </delete>
 </mapper>

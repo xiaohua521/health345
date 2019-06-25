@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hua.dao.MenuDao">
+    <!--获取菜单-->
+    <select id="findPage" parameterType="String" resultType="menu">
+        select * from t_menu
+        <if test="value != null and value.length > 0">
+            where name like "%"#{value}"%"
+        </if>
+    </select>
+
+    <!--添加菜单-->
+    <insert id="add" parameterType="menu">
+        insert into t_menu(id,name,linkUrl,priority) values(null,#{name,jdbcType=VARCHAR},#{linkUrl,jdbcType=VARCHAR},#{priority,jdbcType=INTEGER})
+    </insert>
+
+    <!--回显数据-->
+    <select id="findById" parameterType="int" resultType="menu">
+        select * from t_menu where id = #{id}
+    </select>
+
+    <!--更新数据-->
+    <update id="update" parameterType="menu">
+        update t_menu set name= #{name,jdbcType=VARCHAR},linkUrl=#{linkUrl,jdbcType=VARCHAR},priority=#{priority,jdbcType=INTEGER} where id = #{id}
+    </update>
+
+    <!--删除菜单-->
+    <delete id="delById" parameterType="int">
+        delete from t_menu where id = #{id}
+    </delete>
+
+    <!--根据用户名查询用户id-->
+    <select id="getUserId" parameterType="string" resultType="int">
+        SELECT id FROM t_user WHERE username = #{username}
+    </select>
+
+    <!--根据用户ID查询到角色id-->
+    <select id="getRoleId" resultType="int" parameterType="int">
+        SELECT role_id FROM t_user_role WHERE user_id = #{id}
+    </select>
+
+    <!--根据角色id查询到对应菜单id-->
+    <select id="getMenuId" parameterType="int" resultType="int">
+        SELECT menu_id FROM t_role_menu WHERE role_id = #{role_id}
+    </select>
+
+    <!--根据菜单id查询到菜单信息-->
+    <select id="getMenu" resultType="menu" parameterType="int">
+        SELECT * FROM t_menu WHERE id = #{id}
+    </select>
+
+    <!--查找出与menu_id相等的ParentMenuId的子菜单-->
+    <select id="getMenuById" resultType="menu" parameterType="int">
+        SELECT * FROM t_menu WHERE parentMenuId = #{id}
+    </select>
+
+</mapper>

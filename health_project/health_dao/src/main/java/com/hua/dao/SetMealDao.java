@@ -60,4 +60,11 @@ public interface SetMealDao {
      * @return
      */
     List<Map<String, Object>> getHotSetMeal();
+
+    /**
+     *  通过id进行查询套餐对象
+     * @param id
+     * @return
+     */
+    Setmeal findByIdSetmeal(Integer id);
 }

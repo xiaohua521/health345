@@ -17,11 +17,11 @@
 
         INSERT INTO `t_member`(`name`, `sex`, `idCard`, `phoneNumber`, `regTime`)
         VALUES (
-              #{name,jdbcType=VARCHAR},
-              #{sex,jdbcType=CHAR},
-              #{idCard,jdbcType=VARCHAR},
-              #{phoneNumber,jdbcType=VARCHAR},
-              #{regTime}
+        #{name,jdbcType=VARCHAR},
+        #{sex,jdbcType=CHAR},
+        #{idCard,jdbcType=VARCHAR},
+        #{phoneNumber,jdbcType=VARCHAR},
+        #{regTime}
         )
     </insert>
     <!--获取每月会员数量-->
@@ -47,6 +47,35 @@
     <!--本月新增会员数-->
     <select id="getThisMonthAddMemberCount" parameterType="String" resultType="long">
         select count(1) from t_member where regTime &gt;= #{date}
+    </select>
+
+    <!--查询性别比例-->
+    <select id="getSexproportion" resultType="map">
+         SELECT sex name, count(1) value FROM t_member  GROUP BY sex
+    </select>
+
+    <!--查询年龄区间比例-->
+    <select id="getAgebracket" resultType="map">
+      SELECT	nld  AS name , count( * )  AS value
+	   FROM(	SELECT CASE
+		WHEN
+			birthday BETWEEN DATE_SUB( NOW( ), INTERVAL 20 YEAR )
+			AND  NOW() THEN
+				'0-18'
+				WHEN birthday BETWEEN DATE_SUB( NOW( ), INTERVAL 30 YEAR )
+				AND DATE_SUB( NOW( ), INTERVAL 18 YEAR ) THEN
+					'18-30岁'
+				WHEN birthday BETWEEN DATE_SUB( NOW( ), INTERVAL 45 YEAR )
+				AND DATE_SUB( NOW( ), INTERVAL 30 YEAR ) THEN
+					'30-40岁'
+
+				ELSE '45岁以上'
+						END AS nld
+				FROM t_member
+				) a
+			GROUP BY
+				name
+
     </select>
 
 </mapper>
