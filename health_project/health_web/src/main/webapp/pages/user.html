@@ -59,8 +59,8 @@
                     </div>
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
-                        <el-table-column prop="birthday" label="出生日期" align="center"></el-table-column>
                         <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+<!--                        <el-table-column prop="birthday" label="出生日期" align="center"></el-table-column>-->
                         <el-table-column label="性别" align="center">
                             <template slot-scope="scope">
                                 <span>{{ scope.row.gender == '1' ? '男' : scope.row.gender == '0' ? '女' : '未填'}}</span>
@@ -100,10 +100,15 @@
                                         <el-form label-position="right" label-width="100px" ref="dataAddForm" :model="formData" :rules="rules">
                                             <el-row>
                                                 <el-col :span="12">
+                                                    <el-form-item label="用户名" prop="username">
+                                                        <el-input v-model="formData.username"/>
+                                                    </el-form-item>
+                                                </el-col>
+                                              <!--  <el-col :span="12">
                                                     <el-form-item label="出生日期">
                                                         <el-input v-model="formData.birthday"/>
                                                     </el-form-item>
-                                                </el-col>
+                                                </el-col>-->
                                                 <el-col :span="12">
                                                     <el-form-item label="性别"  prop="gender">
                                                         <el-select v-model="formData.gender">
@@ -114,11 +119,7 @@
                                                 </el-col>
                                             </el-row>
                                             <el-row>
-                                                <el-col :span="12">
-                                                    <el-form-item label="用户名" prop="username">
-                                                        <el-input v-model="formData.username"/>
-                                                    </el-form-item>
-                                                </el-col>
+
                                                 <el-col :span="12">
                                                     <el-form-item label="密码" prop="password">
                                                         <el-input v-model="formData.password"/>
@@ -185,11 +186,11 @@
                                     <el-tab-pane label="基本信息" name="first">
                                         <el-form label-position="right" label-width="100px" ref="dataEditForm" :model="formData" :rules="rules">
                                             <el-row>
-                                                <el-col :span="12">
+                                                <!--<el-col :span="12">
                                                     <el-form-item label="出生日期">
                                                         <el-input v-model="formData.birthday"/>
                                                     </el-form-item>
-                                                </el-col>
+                                                </el-col>-->
                                                 <el-col :span="12">
                                                     <el-form-item label="性别"  prop="gender">
                                                         <el-select v-model="formData.gender">
@@ -427,7 +428,7 @@
                     axios.get("/user/findById.do?id=" + row.id).then((res) => {
                         this.formData = res.data.data;
                         //2.查询所有角色
-                        axios.get("/role/findAll.do").then((res) => {
+                        axios.get("/role/findAll2.do").then((res) => {
                             this.tableData = res.data.data;
                             //3.查询用户已经关联的角色
                             axios.get("/user/findRoleIdsById.do?id=" + row.id).then((res) => {
